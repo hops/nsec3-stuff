@@ -18,6 +18,8 @@ domain     = sys.argv[1]
 salt       = sys.argv[2]
 iterations = sys.argv[3]
 
+lsalt = int(len(salt))
+
 tmp = domain.split('.')
 toHash = ''
 # all dots get replaced by the length (in byte) of the following string
@@ -33,4 +35,4 @@ hash = hashlib.sha1(toHash).digest() + binascii.a2b_hex(salt)
 for i in range(int(iterations)):
     # salt gets appended in each iteration
     hash = hashlib.sha1(hash).digest() + binascii.a2b_hex(salt)
-print base64.b32encode(hash[:-2]).translate(__std2nsec3, '=')
+print base64.b32encode(hash[:-lsalt/2]).translate(__std2nsec3, '=')
