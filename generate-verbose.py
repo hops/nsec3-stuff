@@ -28,12 +28,18 @@ for i in tmp:
     toHash += chr(len(i))
     toHash += i
 #append a NULL byte following with the salt(as bytes)
+print "domain     : " + domain
+print "salt       : " + salt
+print "iterations : " + str(iterations)
 toHash += '\0' + binascii.a2b_hex(salt)
+print "toHash     : " + ":".join(x.encode("hex") for x in toHash)
 
 #initial hashround
 hash = hashlib.sha1(toHash).digest() + binascii.a2b_hex(salt)
+print "first round: " + ":".join(x.encode("hex") for x in hash)
 #hash it again with number of iterations
 for i in range(int(iterations)):
     # salt gets appended in each iteration
     hash = hashlib.sha1(hash).digest() + binascii.a2b_hex(salt)
-print base64.b32encode(hash[:-lsalt/2]).translate(__std2nsec3, '=')
+    print "iteration " + str(i) + ": " + ":".join(x.encode("hex") for x in hash)
+print "base32 enc : " + base64.b32encode(hash[:-lsalt/2]).translate(__std2nsec3, '=')
